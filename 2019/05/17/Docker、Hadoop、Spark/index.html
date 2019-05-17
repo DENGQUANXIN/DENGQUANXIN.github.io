@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="灯泉星的博客">
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Docker+Hadoop+Spark简单环境搭建 - 灯泉星的博客 | DENGQUANXIN&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Suffering is good for you. </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/momo.jpg">
+        </div>
+        <div class="name">
+            <i>Quanxin Deng</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker"><span class="toc-text">Docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop"><span class="toc-text">Hadoop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark"><span class="toc-text">Spark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-wordcount"><span class="toc-text">MapReduce wordcount</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spark-wordcount"><span class="toc-text">Spark wordcount</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Suffering is good for you. </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Docker+Hadoop+Spark简单环境搭建
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-05-17 14:51:22</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Docker" title="Docker">Docker</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content ">
+        <h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><ol>
+<li><p>Fedora安装Docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo dnf -y install dnf-plugins-core</span><br><span class="line">$ sudo dnf config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/fedora/docker-ce.repo</span><br><span class="line">$ sudo dnf install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动Docker服务：<code>service docker start</code></p>
+</li>
+<li><p><a href="https://hub.docker.com/r/nusbigdatacs4225/ubuntu-with-hadoop-spark" target="_blank" rel="noopener">新国大Docker镜像</a>，配置为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- ubuntu</span><br><span class="line">- jdk 1.8.0_191 (/usr/java)</span><br><span class="line">- Hadoop 2.8.5 (/usr/local/hadoop)</span><br><span class="line">- Spark 2.2.0 (/usr/local/spark)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建containers</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it -h master --name master nusbigdatacs4225/ubuntu-with-hadoop-spark</span><br><span class="line">$ docker run -it -h slave01 --name slave01 nusbigdatacs4225/ubuntu-with-hadoop-spark</span><br><span class="line">$ docker run -it -h slave02 --name slave02 nusbigdatacs4225/ubuntu-with-hadoop-spark</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>退出container：<code>exit</code></p>
+</li>
+<li>查看containers：<code>sudo docker ps [-a]</code></li>
+<li>重启container：<code>sudo docker container start [name]</code></li>
+<li>进入container命令行：<code>sudo docker attach [name]</code></li>
+</ol>
+<h2 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h2><ol>
+<li>查看三个容器各自的ip，如：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">master: 172.17.0.2</span><br><span class="line">slave01:172.17.0.3</span><br><span class="line">slave02:172.17.0.4</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>讲对应ip填入<code>/etc/hosts</code>配置中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/hosts</span><br><span class="line"><span class="comment"># 在文件最后增加</span></span><br><span class="line">172.17.0.2	master</span><br><span class="line">172.17.0.3	slave01</span><br><span class="line">172.17.0.4	slave02</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>/usr/local/hadoop/etc/hadoop/slaves</code>配置中增加<code>slave01 slave02</code></p>
+</li>
+<li><p>初始化hdfs并且运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/hadoop</span><br><span class="line">bin/hdfs namenode-format</span><br><span class="line">sbin/start-all.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>hdfs命令：<code>/usr/local/hadoop/bin/hdfs dfs -[命令] [参数]</code></p>
+</li>
+<li>停止hdfs：<code>/usr/local/hadoop/sbin/stop-all.sh</code></li>
+<li>查看运行：<code>jps</code></li>
+</ol>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><ol>
+<li><p>在<code>/usr/local/spark/conf/spark-env.sh</code>中配置hadoop与Java路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/jdk1.8.0_191</span><br><span class="line"><span class="built_in">export</span> HADOOP_HOME=/usr/<span class="built_in">local</span>/hadoop-2.8.5</span><br><span class="line"><span class="built_in">export</span> HADOOP_CONF_DIR=/usr/<span class="built_in">local</span>/hadoop-2.8.5/etc/hadoop</span><br><span class="line"><span class="built_in">export</span> SPARK_MASTER_IP=172.17.0.2</span><br><span class="line"><span class="built_in">export</span> SPARK_DIST_CLASSPATH=$(/usr/<span class="built_in">local</span>/hadoop/bin/hadoop classpath)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>/usr/local/spark/conf/slaves</code>中配置从节点：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost slave01 slave02</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="MapReduce-wordcount"><a href="#MapReduce-wordcount" class="headerlink" title="MapReduce wordcount"></a>MapReduce wordcount</h2><ol>
+<li>创建用户目录：<code>/usr/local/hadoop/bin/hdfs dfs -mkdir input /user/</code></li>
+<li>上传input(自行在其中增加需要进行wordcount的文件)：<code>/usr/local/hadoop/bin/hdfs dfs -put input /user/</code></li>
+<li>运行wordcount示例：<code>/usr/local/hadoop/bin/hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.8.5.jar wordcount /user/input /user/output</code></li>
+</ol>
+<h2 id="Spark-wordcount"><a href="#Spark-wordcount" class="headerlink" title="Spark wordcount"></a>Spark wordcount</h2><ol>
+<li>要求hdfs已启动，并将input文件上传</li>
+<li><p>在master中安装pyspark：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install python3-pip</span><br><span class="line">pip3 install pyspark</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个python3的软链接pytho：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/bin</span><br><span class="line">ln -s python3 python</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>python实现wordcount</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wordcount.py</span></span><br><span class="line">from pyspark import SparkContext</span><br><span class="line">from time import time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">start = time()</span><br><span class="line">sc = SparkContext(<span class="string">'local'</span>, <span class="string">'wordcount'</span>)</span><br><span class="line">text_file = sc.textFile(<span class="string">"hdfs://master:9000/user/input"</span>)</span><br><span class="line">counts = text_file.flatMap(lambda line: line.split(<span class="string">" "</span>)) \</span><br><span class="line">             .map(lambda word: (word, 1)) \</span><br><span class="line">             .reduceByKey(lambda a, b: a + b)</span><br><span class="line">counts.saveAsTextFile(<span class="string">"hdfs://master:9000/user/output"</span>)</span><br><span class="line">elapsed = (time() - start)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">"Time used:"</span>, int(elapsed * 1000))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python wordcount.py</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        <li>
+            <a target="_blank" href="https://www.zhihu.com/people/ding-dong-14-78">
+                            <span class="fa-stack fa-lg">
+                                 <i class="iconfont icon-zhihu"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/DENGQUANXIN">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+    </ul>
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC8zNzU0OS8xNDA4MQ==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
