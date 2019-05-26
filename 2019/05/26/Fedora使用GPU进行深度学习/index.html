@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="灯泉星的博客">
+    <meta name="keyword" content>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Fedora使用GPU进行深度学习 - 灯泉星的博客 | DENGQUANXIN&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> Suffering is good for you. </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/momo.jpg">
+        </div>
+        <div class="name">
+            <i>Quanxin Deng</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#系统配置"><span class="toc-text">系统配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Nvidia驱动"><span class="toc-text">安装Nvidia驱动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Fedora"><span class="toc-text">安装Fedora</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#驱动安装"><span class="toc-text">驱动安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cuDNN"><span class="toc-text">cuDNN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CUDA"><span class="toc-text">CUDA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cuDNN-1"><span class="toc-text">cuDNN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装python"><span class="toc-text">安装python</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些问题以及解决"><span class="toc-text">一些问题以及解决</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input">
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> Suffering is good for you. </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Fedora使用GPU进行深度学习
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-05-26 13:08:53</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Fedora" title="Fedora">Fedora</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Deep Learning" title="Deep Learning">Deep Learning</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><table>
+<thead>
+<tr>
+<th style="text-align:center"><strong>内容</strong></th>
+<th style="text-align:center"><strong>版本</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CPU</td>
+<td style="text-align:center">i7-8700</td>
+</tr>
+<tr>
+<td style="text-align:center">显卡</td>
+<td style="text-align:center">GeForce RTX2070/PCIe/SSE2</td>
+</tr>
+<tr>
+<td style="text-align:center">Fedora</td>
+<td style="text-align:center">64位30版本</td>
+</tr>
+<tr>
+<td style="text-align:center">Python</td>
+<td style="text-align:center">3.5.4</td>
+</tr>
+<tr>
+<td style="text-align:center">CUDA</td>
+<td style="text-align:center">9.0</td>
+</tr>
+<tr>
+<td style="text-align:center">cuDNN</td>
+<td style="text-align:center">7.4.2</td>
+</tr>
+<tr>
+<td style="text-align:center">Tensorflow</td>
+<td style="text-align:center">1.12.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="安装Nvidia驱动"><a href="#安装Nvidia驱动" class="headerlink" title="安装Nvidia驱动"></a>安装Nvidia驱动</h2><h3 id="安装Fedora"><a href="#安装Fedora" class="headerlink" title="安装Fedora"></a>安装Fedora</h3><p>Fedora系统安装步骤可以看<a href="https://dengquanxin.github.io/2019/05/17/Fedora%E9%87%8D%E8%A3%85%E8%AE%B0%E5%BD%95/" target="_blank" rel="noopener">Fedora重装记录</a>。</p>
+<p>在安装Fedora时，由于<strong>未安装驱动</strong>，所以在通过U盘启动的系统会很卡（卡到心态爆炸！！！）。</p>
+<p>解决办法：1、硬抗过去；2、或者试试先把GPU拆了，系统安装好再装回去？</p>
+<h3 id="驱动安装"><a href="#驱动安装" class="headerlink" title="驱动安装"></a>驱动安装</h3><p>Fedora安装完成后，由于<strong>未安装驱动</strong>，系统还是会很卡，不过通过以下步骤就能很快完成驱动安装：</p>
+<ol>
+<li>打开<strong>软件商店</strong></li>
+<li>选择<strong>软件源</strong></li>
+<li>启用<strong>RPM Fusion for Fedora 30-Nonfree-NVIDIA Driver</strong>软件源</li>
+<li><strong>注销</strong>后重新登录</li>
+<li>打开软件商店，选择<strong>附加组件</strong></li>
+<li>选择<strong>硬件驱动</strong>，安装<strong>NVIDIA Linux Graphics Driver</strong>（如果没有硬件驱动选项可以<strong>重启</strong>试试）</li>
+<li><strong>重启</strong>电脑，然后就不卡了</li>
+</ol>
+<h2 id="cuDNN"><a href="#cuDNN" class="headerlink" title="cuDNN"></a>cuDNN</h2><h3 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h3><p>进入<a href="https://developer.nvidia.com/cuda-90-download-archive" target="_blank" rel="noopener">CUDA下载</a>，选择对应的操作系统(Fedora30<strong>向下兼容</strong>)，选择<strong>rpm(network)</strong>（下载速度快些）</p>
+<blockquote>
+<p><em>Note</em>: 下载需要登录，创建一个就行了</p>
+</blockquote>
+<p>下载完成后，打开终端，运行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">sudo rpm -i cuda-repo-fedora25-9.0.176-1.x86_64.rpm</span><br><span class="line">sudo dnf clean all</span><br><span class="line">sudo dnf install cuda-libraries-9-0</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><em>Note:</em> <em>replace “cuda” with the “cuda-libraries-9-0” meta package.</em><br>需要将官网install命令的cuda替换成cuda-libraries-9-0，不然会安装cuda9.1</p>
+</blockquote>
+<p>之后配置环境变量，打开<code>.bashrc</code>，若使用zsh则打开<code>.zshrc</code>，在文件末尾添加：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># path for cuda</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=:/usr/<span class="built_in">local</span>/cuda/lib64</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME=/usr/<span class="built_in">local</span>/cuda</span><br><span class="line"><span class="built_in">export</span> CPLUS_INCLUDE_PATH=:/usr/<span class="built_in">local</span>/cuda/samples/common/inc</span><br></pre></td></tr></table></figure></p>
+<p>保存后，需要创建一个<code>cuda</code>到<code>cuda-9.0</code>的软连接，以便于<strong>多版本CUDA切换</strong>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -f /usr/<span class="built_in">local</span>/cuda</span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/cuda-9.0 /usr/<span class="built_in">local</span>/cuda</span><br><span class="line"><span class="comment"># 激活前一步配置的环境变量</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"><span class="comment"># 或者对于zsh</span></span><br><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure></p>
+<h3 id="cuDNN-1"><a href="#cuDNN-1" class="headerlink" title="cuDNN"></a>cuDNN</h3><p>进入<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cudnn下载</a>，对应cuda版本的cudnn下载。本文使用版本为7.4.2（因为<strong>比较顺口</strong>），下载<code>cuDNN Library for Linux</code></p>
+<p>下载完成后，打开终端，运行如下命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">tar -xvf cudnn-9.0-linux-x64-v7.tgz</span><br><span class="line">sudo cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda-9.0/include/</span><br><span class="line">cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda-9.0/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn*</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装python"><a href="#安装python" class="headerlink" title="安装python"></a>安装python</h3><p><code>Fedora30</code>自带<code>Python3.7</code>，发现安装不了<code>tensorflow-1.12.0</code>，需要降低版本。因此使用<code>pyEnv</code>来实现<code>多版本python共存</code>。</p>
+<p>安装pyenv：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash</span><br></pre></td></tr></table></figure></p>
+<p>之后配置环境变量，打开<code>.bashrc</code>，若使用zsh则打开<code>.zshrc</code>，在文件末尾添加：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load pyenv automatically by adding</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">"/home/bboysoul/.pyenv/bin:<span class="variable">$PATH</span>"</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(pyenv init -)</span>"</span></span><br><span class="line"><span class="built_in">eval</span> <span class="string">"<span class="variable">$(pyenv virtualenv-init -)</span>"</span></span><br></pre></td></tr></table></figure></p>
+<p>使环境变量生效，并更新pyenv:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 激活前一步配置的环境变量</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"><span class="comment"># 或者对于zsh</span></span><br><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">pyenv update</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><em>NOTE:</em> 如果需要使用<code>matplotlib</code>库，需要使用<code>sudo dnf install python3-tkinter tk-devel</code>提前安装<code>tkinter</code></p>
+</blockquote>
+<p>安装指定版本python，并设置为shell使用版本:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pyenv install 3.5.4</span><br><span class="line">pyenv shell 3.5.4</span><br></pre></td></tr></table></figure></p>
+<p>可以通过将<code>pyenv shell 3.5.4</code>命令添加到<code>.bashrc</code>或<code>.zshrc</code>中，实现每次打开都启动该版本（这个做法感觉<strong>有点暴力</strong>，可能有更好的做法？）</p>
+<p>安装指定版本tensorflow-gpu：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U --pre tensorflow-gpu==1.12.0</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后在python命令行，<code>import tensorflow</code>试试是否安装成功</p>
+<h2 id="一些问题以及解决"><a href="#一些问题以及解决" class="headerlink" title="一些问题以及解决"></a>一些问题以及解决</h2><p>1、遇到<code>CUDNN_STATUS_INTERNAL_ENRROR</code>错误？<br>   <em>解决</em>：万能三步，清除缓存试试<code>rm -rf ~/.nv</code>？重启试试？重装cudnn试试？</p>
+<p>2、发现keras一个程序就占用了所有显存？<br>   <em>解决</em>：参考<a href="https://www.cnblogs.com/to-creat/p/8094174.html" target="_blank" rel="noopener">keras设置GPU使用率</a>，在python文件中添加：<br>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> keras.backend.tensorflow_backend <span class="keyword">import</span> set_session</span><br><span class="line"></span><br><span class="line">config = tf.ConfigProto()</span><br><span class="line">config.gpu_options.allocator_type = <span class="string">'BFC'</span></span><br><span class="line">config.gpu_options.per_process_gpu_memory_fraction = <span class="number">0.3</span></span><br><span class="line">config.gpu_options.allow_growth = <span class="literal">True</span></span><br><span class="line">set_session(tf.Session(config=config))</span><br></pre></td></tr></table></figure></p>
+<p>3、发现没有<code>nvidia-smi</code>命令？<br>   <em>解决</em>：<code>sudo dnf install xorg-x11-drv-nvidia-cuda</code>，可以顺便安装<code>pip install gpustat</code>更方便地查看GPU状态</p>
+
+        
+        <br>
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        <li>
+            <a target="_blank" href="https://www.zhihu.com/people/ding-dong-14-78">
+                            <span class="fa-stack fa-lg">
+                                 <i class="iconfont icon-zhihu"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+        
+        <li>
+            <a target="_blank" href="https://github.com/DENGQUANXIN">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+    </ul>
+    <p>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+    <script type="text/javascript">
+       (function() {
+           if (typeof LivereTower === 'function') { return; }
+
+           var j, d = document.getElementById('lv-container');
+
+           d.setAttribute('data-id','city');
+           d.setAttribute('data-uid' , 'MTAyMC8zNzU0OS8xNDA4MQ==');
+
+           j = document.createElement('script');
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+
+           d.appendChild(j);
+       })();
+    </script>
+    <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+
+</html>
